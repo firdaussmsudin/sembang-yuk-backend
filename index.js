@@ -24,6 +24,13 @@ const io = new Server(server, {
   },
 });
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname,  "build", "index.html"));
+  });
+}
+
 io.on("connection", (socket) => {
   socket.on("login",({username, room}, callback) => { 
     const currentUser = getUsersByRoom(room);
