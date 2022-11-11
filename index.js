@@ -9,9 +9,9 @@ const {
   getUsersByRoom,
 } = require("./users.js");
 
-const PORT = process.env.PORT || 3001;
-
 const { Server } = require("socket.io");
+
+const PORT = process.env.PORT || 3001
 
 app.use(cors());
 
@@ -19,17 +19,10 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://firdaussmsudin.github.io/sembang-yuk/",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("build"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname,  "build", "index.html"));
-  });
-}
 
 io.on("connection", (socket) => {
   socket.on("login",({username, room}, callback) => { 
@@ -39,6 +32,8 @@ io.on("connection", (socket) => {
     )
     ? true
     : false;
+    // console.log(currentUser);
+    // console.log("usernameExisted: ", usernameExisted);
    return callback({userStatus:usernameExisted});
    })
 
