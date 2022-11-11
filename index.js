@@ -11,6 +11,8 @@ const {
 
 const { Server } = require("socket.io");
 
+const router = require('./router');
+
 const PORT = process.env.PORT || 3001
 
 app.use(cors());
@@ -23,6 +25,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
+app.use(router);
 
 io.on("connection", (socket) => {
   socket.on("login",({username, room}, callback) => { 
